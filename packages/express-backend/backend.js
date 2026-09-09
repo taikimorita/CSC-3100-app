@@ -56,6 +56,8 @@ const deleteUserById = (id) => {
   return true;
 };
 
+const generateId = () => Math.random().toString(36).slice(2, 8);
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -94,8 +96,9 @@ app.delete("/users/:id", (req, res) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  addUser(userToAdd);
-  res.send();
+  userToAdd.id = generateId();
+  const added = addUser(userToAdd);
+  res.status(201).send(added);
 });
 
 app.listen(port, () => {
